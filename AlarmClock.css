@@ -1,0 +1,38 @@
+.clockBoxStlye{
+  width: 1000px;
+  height: 200px;
+  margin: none;
+  display: inline-block;
+  background-color: lightgoldenrodyellow;
+}
+
+.textBoxStyle{
+  width: 98%;
+  height: 49%;
+  margin: none;
+  display: inline-block;
+  background-color: aqua;
+}
+
+.smallTextBoxStyle{
+  width: 100%;
+  height: 98%;
+  margin: none;
+  display: inline-block;
+}
+
+.alarmBoxStyle{
+  width: 98%;
+  height: 49%;
+  margin: none;
+  display: inline-block;
+  background-color: brown;
+}
+
+.buttonBoxStyle{
+  width: 1000px;
+  height: 40px;
+  margin: none;
+  display: inline-block;
+  background-color: lightgrey;
+}
