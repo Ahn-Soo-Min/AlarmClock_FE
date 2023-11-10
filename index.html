@@ -9,18 +9,21 @@
 </head>
 <body>
 
-  <div id="modeShow" class="modeShowStyle">
-    모드 : 
+  
+
+  <div id="clockArea" class="clockAreaMode">
+    <div id="modeTitle" class="modeTitleStyle">Clock Mode</div>
+
+    <div id="time" class="timeStyle"></div>
+    <div id="date" class="dateStyle"></div> 
   </div>
 
-  <div id="time" class="timeStyle"></div>
-  <div id="date" class="dateStyle"></div> 
-
   <span>
-    <input type="button" id="button_1" class="buttonStyle" value="MODE">
-    <input type="button" id="button_2" class="buttonStyle" value="SET">
-    <input type="button" id="button_3" class="buttonStyle" value="UP">
-    <input type="button" id="button_4" class="buttonStyle" value="DOWN">
+    <input type="button" id="button_1" class="buttonStyle" value="MODE" onclick="changeMode()">
+    <input type="button" id="button_2" class="buttonStyle" value="MOVE">
+    <input type="button" id="button_3" class="buttonStyle" value="SET">
+    <input type="button" id="button_4" class="buttonStyle" value="UP">
+    <input type="button" id="button_5" class="buttonStyle" value="DOWN">
   </span>
 
 </body>
