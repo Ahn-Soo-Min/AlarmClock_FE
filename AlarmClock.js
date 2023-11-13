@@ -1,5 +1,9 @@
 let mode_num = 0; //모드 변경을 위하여 선언한 모드 값
-let alarm_num = 0;  //알람 모드에서 시, 분, 초를 바꾸기 위하여 선언한 모드 값
+let move_num = 0;  //알람 모드에서 시, 분, 초를 바꾸기 위하여 선언한 모드 값
+
+let h_num = 0;
+let m_num = 0;
+let s_num = 0;
 
 let dateInfo = new Date();
 
@@ -21,7 +25,7 @@ window.onload =function(){
 var interval = setInterval(setTime, 10);
 
 //MODE 버튼을 누를 때 마다 실행되는 함수, 0~3까지의 값을 가진다.(mode_num)
-function changeMode(){
+function mode_Button(){
   //0 : Clock Mode, 1 : Alarm Mode, 2 : Timer Mode, 3 : Stop Watch Mode, 숫자가 3을 넘으면 0으로 초기화
   if(mode_num >= 3){
     mode_num = 0;
@@ -44,7 +48,8 @@ function changeMode(){
 
     clearInterval(interval);
 
-    document.getElementById("time").innerHTML = "&nbsp";
+    // document.getElementById("time").innerHTML = "&nbsp";
+    document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
   }
   //Timer Mode
   else if(mode_num == 2) {
@@ -56,7 +61,184 @@ function changeMode(){
   else if(mode_num == 3) {
     document.getElementById("modeTitle").innerHTML = "StopWatch Mode";
 
-    document.getElementById("time").innerHTML = "333333";
+    document.getElementById("time").innerHTML = "00 : 00 : 00";
+  }
+
+  move_num = 0;
+}
+
+//Move Button을 누르면 실행되는 함수, 시분초의 위치를 옮겨 다니는 기능(move_num)
+function move_Button() {
+  if (move_num >= 2) {
+    move_num = 0;
+  }
+  else {
+    move_num += 1;
+  }
+}
+
+//작성중
+//Up Button을 누르면 실행되는 함수, Clock Mode에서는 실행되지 않음, StopWatch Mode에서는 다르게 실행됨
+function up_Button() {
+  //Alarm mode
+  if (mode_num == 1) {
+    if (move_num == 0) {
+      document.getElementById("time").innerHTML = modifyNumber(++h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
+    }
+    else if (move_num == 1) {
+      if (m_num == 59) {
+        h_num += 1;
+        m_num = 0;
+        document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
+      }
+      else {
+        document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(++m_num) + " : " + modifyNumber(s_num);
+      }
+    }
+    else if (move_num == 2) {
+      if (s_num == 59) {
+        m_num += 1;
+        s_num = 0;
+        document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
+      }
+      else {
+        document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(++s_num);
+      }
+    }
+  }
+  //Timer Mode
+  else if (mode_num == 2) {
+    if (move_num == 0) {
+      document.getElementById("time").innerHTML = modifyNumber(++h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
+    }
+    else if (move_num == 1) {
+      if (m_num == 59) {
+        h_num += 1;
+        m_num = 0;
+        document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
+      }
+      else {
+        document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(++m_num) + " : " + modifyNumber(s_num);
+      }
+    }
+    else if (move_num == 2) {
+      if (s_num == 59) {
+        m_num += 1;
+        s_num = 0;
+        document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
+      }
+      else {
+        document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(++s_num);
+      }
+    }
+  }
+  //StopWatch Mode
+  else if (mode_num == 3) {
+    
+  }
+}
+
+//작성중
+//Down Button을 누르면 실행되는 함수, Clock Mode에서는 실행되지 않음, StopWatch Mode에서는 다르게 실행됨
+function down_Button() {
+  //Alarm Mode
+  if (mode_num == 1) {
+    if (move_num == 0) {
+      if (h_num >= 1) {
+        document.getElementById("time").innerHTML = modifyNumber(--h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
+      }
+    }
+    else if (move_num == 1) {
+      if (m_num == 0) {
+        if (h_num >= 1) {
+          h_num -= 1;
+          m_num = 59;
+          document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
+        }
+      }
+      else {
+        document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(--m_num) + " : " + modifyNumber(s_num);
+      }
+    }
+    else if (move_num == 2) {
+      if (h_num >= 1) {
+        if (m_num == 0) {
+          if (s_num == 0) {
+            h_num -= 1;
+            m_num = 59;
+            s_num = 59;
+            document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
+          }
+          else {
+            document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(--s_num);
+          }
+        }
+        else {
+          if (s_num == 0) {
+            m_num -= 1;
+            s_num = 59;
+            document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
+          }
+          else {
+            document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(--s_num);
+          }
+        }
+      }
+    }
+  }
+  //Timer Mode
+  else if (mode_num == 2) {
+    if (move_num == 0) {
+      if (h_num >= 1) {
+        document.getElementById("time").innerHTML = modifyNumber(--h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
+      }
+    }
+    else if (move_num == 1) {
+      if (m_num == 0) {
+        if (h_num >= 1) {
+          h_num -= 1;
+          m_num = 59;
+          document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
+        }
+        else {
+          
+        }
+      }
+      else {
+        document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(--m_num) + " : " + modifyNumber(s_num);
+      }
+    }
+    else if (move_num == 2) {
+      if (h_num >= 1) {
+        if (s_num == 0) {
+          if (m_num == 0) {
+            h_num -= 1;
+            m_num = 59;
+            s_num = 59;
+            document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
+          }
+          else {
+            m_num -= 1;
+            s_num = 59;
+            document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(s_num);
+          }
+        }
+        else {
+          document.getElementById("time").innerHTML = modifyNumber(h_num) + " : " + modifyNumber(m_num) + " : " + modifyNumber(--s_num);
+        }
+      }
+    }
+  }
+  else if (mode_num == 3) {
+    if (move_num == 0) {
+      
+    }
+    else if (move_num == 1) {
+      
+    }
+    else if (move_num == 2) {
+      
+    }
   }
 }
 
@@ -92,13 +274,35 @@ function modifyNumber(time) {
   }
 }
 
-//작성중
-function setAlarm(){
-  var hour_blink = "&nbsp&nbsp" + " : " + min + " : " + sec;
-  var minutes_blink = hour + " : " + "&nbsp&nbsp" + " : " + sec;
-  var seconds_blink = hour + " : " + min + " : " + "&nbsp&nbsp";
+//숫자가 깜빡이는 함수 (작성중)
+// async function num_blink() {
+  
+//   var hour_blink = "&nbsp&nbsp" + " : " + min + " : " + sec;
+//   var minutes_blink = hour + " : " + "&nbsp&nbsp" + " : " + sec;
+//   var seconds_blink = hour + " : " + min + " : " + "&nbsp&nbsp";
 
-  if(alarm_num == 0) {
-    
-  }
-}
+//   if(move_num == 0) {
+//     document.getElementById("time").innerHTML = hour_blink;
+//     await sleep(500);
+//     document.getElementById("time").innerHTML = hour;
+//     await sleep(500);
+
+//     move_num += 1;
+//   }
+//   else if(move_num == 1) {
+//     document.getElementById("time").innerHTML = hour_blink;
+//     await sleep(500);
+//     document.getElementById("time").innerHTML = hour;
+//     await sleep(500);
+
+//     move_num += 1;
+//   }
+//   else if(move_num == 2) {
+//     document.getElementById("time").innerHTML = hour_blink;
+//     await sleep(500);
+//     document.getElementById("time").innerHTML = hour;
+//     await sleep(500);
+
+//     move_num = 0;
+//   }
+// }

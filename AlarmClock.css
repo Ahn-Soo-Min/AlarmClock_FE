@@ -9,14 +9,28 @@ body {
 }
 
 .clockAreaStyle {
+  width: 80%;
+  align-self:center;
+  margin: auto;
   border: 5px solid aliceblue;
-  display: inline-block;
+  border-radius: 30px;
+  padding-bottom: 10%;
+  display: block;
+  justify-content: center;
+  align-items: center;
+}
+
+.clockSourceStyle{
+  /* background-color: antiquewhite; */
+  padding-bottom: 8%;
+  display: block;
 }
 
 .modeTitleStyle {
   position: relative;
   font-size: 48px;
   font: bold;
+  display: block;
   color: whitesmoke;
 }
 
@@ -32,6 +46,10 @@ body {
   font-size: 90px;
   font-weight: bold;
   color: darkgray;
+  display: block;
+}
+
+.buttonAreaStyle{
   display: block;
 }
 

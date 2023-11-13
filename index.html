@@ -9,22 +9,23 @@
 </head>
 <body>
 
-  
+  <div id="clockArea" class="clockAreaStyle">
+    <div id="clockSource" class="clockSourceStyle">
+      <div id="modeTitle" class="modeTitleStyle">Clock Mode</div>
+      
+      <div id="time" class="timeStyle"></div>
+      <div id="date" class="dateStyle"></div>
+    </div>
 
-  <div id="clockArea" class="clockAreaMode">
-    <div id="modeTitle" class="modeTitleStyle">Clock Mode</div>
-
-    <div id="time" class="timeStyle"></div>
-    <div id="date" class="dateStyle"></div> 
-  </div>
-
-  <span>
-    <input type="button" id="button_1" class="buttonStyle" value="MODE" onclick="changeMode()">
-    <input type="button" id="button_2" class="buttonStyle" value="MOVE">
-    <input type="button" id="button_3" class="buttonStyle" value="SET">
-    <input type="button" id="button_4" class="buttonStyle" value="UP">
-    <input type="button" id="button_5" class="buttonStyle" value="DOWN">
-  </span>
+    <div id="buttonArea" class="buttonAreaStyle">
+      <input type="button" id="button_1" class="buttonStyle" value="MODE" onclick="mode_Button()">
+      <input type="button" id="button_2" class="buttonStyle" value="MOVE" onclick="move_Button()">
+      <input type="button" id="button_3" class="buttonStyle" value="SET" onclick="set_Button()">
+      <input type="button" id="button_4" class="buttonStyle" value="UP" onclick="up_Button()">
+      <input type="button" id="button_5" class="buttonStyle" value="DOWN" onclick="down_Button()">
+    </div>
+     
+  </div> <br>
 
 </body>
 </html>
