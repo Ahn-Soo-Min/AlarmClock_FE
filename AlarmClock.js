@@ -156,6 +156,10 @@ function up_Button() {
       }
     }
   }
+  //StopWatch Mode, Start 버튼으로 취급됨
+  if (mode_num == 3) {
+    
+  }
 }
 
 //Down Button을 누르면 실행되는 함수, Clock Mode에서는 실행되지 않음, StopWatch Mode에서는 다르게 실행됨
