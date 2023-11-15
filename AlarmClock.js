@@ -9,6 +9,9 @@ let h_num2 = 0;
 let m_num2 = 0;
 let s_num2 = 0;
 
+let alarm_value; //Set 버튼을 누를 때 시간 값을 저장하는 변수
+let timer_value; //Set 버튼을 누를 때 시간 값을 저장하는 변수
+
 let dateInfo = new Date();
 
 let year = dateInfo.getFullYear();
@@ -164,6 +167,7 @@ function up_Button() {
 
 //Down Button을 누르면 실행되는 함수, Clock Mode에서는 실행되지 않음, StopWatch Mode에서는 다르게 실행됨
 function down_Button() {
+  //Alarm Mode
   if (mode_num == 1) {
     if (move_num == 0) {
       if (h_num1 > 0) {
@@ -206,6 +210,7 @@ function down_Button() {
       }
     }
   }
+  //Timer Mode
   if (mode_num == 2) {
     if (move_num == 0) {
       if (h_num2 > 0) {
@@ -248,15 +253,23 @@ function down_Button() {
       }
     }
   }
+  //StopWatch Mode, Stop 버튼으로 취급
+  if (mode_num == 3) {
+    
+  }
 }
 
 function set_Button() {
+  //Alarm Mode
   if (mode_num == 1) {
-    
+    alarm_value = [h_num1, m_num1, s_num1];
+
   }
+  //Timer Mode
   if (mode_num == 2) {
-    
+    timer_value = [h_num2, m_num2, s_num2];
   }
+  //StopWatch Mode, Reset 버튼으로 취급
   if (mode_num == 3) {
     
   }
@@ -295,36 +308,60 @@ function modifyNumber(time) {
 }
 
 //숫자가 깜빡이는 함수 (작성중)
-async function num_blink() {
+// async function num_blink() {
   
-  var hour_blink = "&nbsp&nbsp" + " : " + min + " : " + sec;
-  var minutes_blink = hour + " : " + "&nbsp&nbsp" + " : " + sec;
-  var seconds_blink = hour + " : " + min + " : " + "&nbsp&nbsp";
+//   var hour_blink = "&nbsp&nbsp" + " : " + min + " : " + sec;
+//   var minutes_blink = hour + " : " + "&nbsp&nbsp" + " : " + sec;
+//   var seconds_blink = hour + " : " + min + " : " + "&nbsp&nbsp";
 
-  if (mode_num == 1 || mode_num == 2) {
-    if (move_num == 0) {
-      document.getElementById("time").innerHTML = hour_blink;
-      await sleep(500);
-      document.getElementById("time").innerHTML = hour;
-      await sleep(500);
+//   if (mode_num == 1 || mode_num == 2) {
+//     if (move_num == 0) {
+//       document.getElementById("time").innerHTML = hour_blink;
+//       await sleep(500);
+//       document.getElementById("time").innerHTML = hour;
+//       await sleep(500);
 
-      move_num += 1;
-    }
-    else if (move_num == 1) {
-      document.getElementById("time").innerHTML = hour_blink;
-      await sleep(500);
-      document.getElementById("time").innerHTML = hour;
-      await sleep(500);
+//       move_num += 1;
+//     }
+//     else if (move_num == 1) {
+//       document.getElementById("time").innerHTML = hour_blink;
+//       await sleep(500);
+//       document.getElementById("time").innerHTML = hour;
+//       await sleep(500);
 
-      move_num += 1;
-    }
-    else if (move_num == 2) {
-      document.getElementById("time").innerHTML = hour_blink;
-      await sleep(500);
-      document.getElementById("time").innerHTML = hour;
-      await sleep(500);
+//       move_num += 1;
+//     }
+//     else if (move_num == 2) {
+//       document.getElementById("time").innerHTML = hour_blink;
+//       await sleep(500);
+//       document.getElementById("time").innerHTML = hour;
+//       await sleep(500);
 
-      move_num = 0;
-    }
+//       move_num = 0;
+//     }
+//   }
+// }
+
+function readFile() {
+  let content = null;
+  let xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("GET", "C:\Users\Ahn SooMin\Desktop\AlarmClock_FE")
+}
+
+function writeFile(name, msg) {//name : 파일명, msg : 기록할 내용
+  if (name == "") return false;
+  var defaultPath = "C:\Users\Ahn SooMin\Desktop\AlarmClock_FE"
+  var fileObject = new ActiveXObject("Scripting.FileSystemObject");
+  var fullpath = defaultPath + "\\" + name;
+
+  if (!fileObject.FileExists(fullpath)) {
+    var fWrite = fileObject.CreateTextFile(fullpath, false);
+    fWrite.write(msg);
+    fWrite.close();
+  }
+  else {
+    var fWrite = fileObject.OpenTextFile(fullpath, 8);
+    fWrite.write(msg);
+    fWrite.close();
   }
 }
