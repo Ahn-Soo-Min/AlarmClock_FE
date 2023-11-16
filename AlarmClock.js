@@ -1,10 +1,12 @@
 let mode_num = 0; //모드 변경을 위하여 선언한 모드 값
 let move_num = 0;  //알람 모드에서 시, 분, 초를 바꾸기 위하여 선언한 모드 값
 
+//Alarm Mode에서 사용하는 변수 값들
 let h_num1 = 0;
 let m_num1 = 0;
 let s_num1 = 0;
 
+//Timer Mode에서 사용하는 변수 값들
 let h_num2 = 0;
 let m_num2 = 0;
 let s_num2 = 0;
@@ -12,20 +14,30 @@ let s_num2 = 0;
 let alarm_value; //Set 버튼을 누를 때 시간 값을 저장하는 변수
 let timer_value; //Set 버튼을 누를 때 시간 값을 저장하는 변수
 
+//Date() 함수를 불러오기
 let dateInfo = new Date();
 
+//연, 월, 일 불러오기
 let year = dateInfo.getFullYear();
 let month = dateInfo.getMonth() + 1;
 let date = dateInfo.getDate();
 
+//시간, 분, 초를 modifyNumber() 함수로 무조건 2자리로 불러오기
 let hour = modifyNumber(dateInfo.getHours());
 let min = modifyNumber(dateInfo.getMinutes());
 let sec = modifyNumber(dateInfo.getSeconds());
+
+//Timer Mode에서 사용하는 변수들
+let timerId;
+let time = 0;
+let stopwatch;
+let swhour, swmin, swsec;
 
 //페이지가 로드 될 때 실행되는 함수
 window.onload =function(){
   setDate();
   setTime();
+  stopwatch = document.getElementById("time");
 }
 
 //setTime() 함수를 0.01초 마다 실행되게 하는 함수
@@ -48,6 +60,11 @@ function mode_Button(){
 
     setTime();
     interval = setInterval(setTime, 10);
+
+    document.getElementById("button_2").setAttribute("value", "MOVE");
+    document.getElementById("button_3").setAttribute("value", "SET");
+    document.getElementById("button_4").setAttribute("value", "UP");
+    document.getElementById("button_5").setAttribute("value", "DOWN");
   }
   //Alarm Mode
   else if(mode_num == 1) {
@@ -68,6 +85,10 @@ function mode_Button(){
     document.getElementById("modeTitle").innerHTML = "StopWatch Mode";
 
     document.getElementById("time").innerHTML = "00 : 00 : 00";
+    document.getElementById("button_2").setAttribute("value", "     ")
+    document.getElementById("button_3").setAttribute("value", "RESET");
+    document.getElementById("button_4").setAttribute("value", "START");
+    document.getElementById("button_5").setAttribute("value", "STOP");
   }
 
   move_num = 0;
@@ -83,7 +104,7 @@ function move_Button() {
   }
 }
 
-//Up Button을 누르면 실행되는 함수, Clock Mode에서는 실행되지 않음, StopWatch Mode에서는 다르게 실행됨
+//Up Button을 누르면 실행되는 함수, Clock Mode에서는 실행되지 않음, StopWatch Mode에서는 Start 버튼임
 function up_Button() {
   //Alarm Mode
   if (mode_num == 1) {
@@ -161,11 +182,11 @@ function up_Button() {
   }
   //StopWatch Mode, Start 버튼으로 취급됨
   if (mode_num == 3) {
-    
+    startClock();
   }
 }
 
-//Down Button을 누르면 실행되는 함수, Clock Mode에서는 실행되지 않음, StopWatch Mode에서는 다르게 실행됨
+//Down Button을 누르면 실행되는 함수, Clock Mode에서는 실행되지 않음, StopWatch Mode에서는 Stop 버튼임
 function down_Button() {
   //Alarm Mode
   if (mode_num == 1) {
@@ -255,23 +276,23 @@ function down_Button() {
   }
   //StopWatch Mode, Stop 버튼으로 취급
   if (mode_num == 3) {
-    
+    stopClock();
   }
 }
 
 function set_Button() {
   //Alarm Mode
   if (mode_num == 1) {
-    alarm_value = [h_num1, m_num1, s_num1];
-
+    init_Alarm();
+    // console.log("clicked set in alarmMode");
   }
   //Timer Mode
   if (mode_num == 2) {
-    timer_value = [h_num2, m_num2, s_num2];
+    
   }
   //StopWatch Mode, Reset 버튼으로 취급
   if (mode_num == 3) {
-    
+    resetClock();
   }
 }
 
@@ -307,45 +328,69 @@ function modifyNumber(time) {
   }
 }
 
-//숫자가 깜빡이는 함수 (작성중)
-// async function num_blink() {
-  
-//   var hour_blink = "&nbsp&nbsp" + " : " + min + " : " + sec;
-//   var minutes_blink = hour + " : " + "&nbsp&nbsp" + " : " + sec;
-//   var seconds_blink = hour + " : " + min + " : " + "&nbsp&nbsp";
+//StopWatch Mode에서 time 태그에 들어가는 시간을 출력하는 함수
+function printTime() {
+  time++;
+  document.getElementById("time").innerText = getTimeFormatString();
+}
 
-//   if (mode_num == 1 || mode_num == 2) {
-//     if (move_num == 0) {
-//       document.getElementById("time").innerHTML = hour_blink;
-//       await sleep(500);
-//       document.getElementById("time").innerHTML = hour;
-//       await sleep(500);
+//시계 시작 - 재귀호출로 반복실행
+function startClock() {
+  printTime();
+  stopClock();
+  timerId = setTimeout(startClock, 1000);
+}
 
-//       move_num += 1;
-//     }
-//     else if (move_num == 1) {
-//       document.getElementById("time").innerHTML = hour_blink;
-//       await sleep(500);
-//       document.getElementById("time").innerHTML = hour;
-//       await sleep(500);
+//시계 중지
+function stopClock() {
+  if (timerId != null) {
+    clearTimeout(timerId);
+  }
+}
 
-//       move_num += 1;
-//     }
-//     else if (move_num == 2) {
-//       document.getElementById("time").innerHTML = hour_blink;
-//       await sleep(500);
-//       document.getElementById("time").innerHTML = hour;
-//       await sleep(500);
+// 시계 초기화
+function resetClock() {
+  stopClock()
+  document.getElementById("time").innerHTML = "00 : 00 : 00";
+  time = 0;
+}
 
-//       move_num = 0;
-//     }
-//   }
-// }
+// 시간(int)을 시, 분, 초 문자열로 변환
+function getTimeFormatString() {
+  swhour = parseInt(String(time / (60 * 60)));
+  swmin = parseInt(String((time - (swhour * 60 * 60)) / 60));
+  swsec = time % 60;
 
-function readFile() {
-  let content = null;
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", "C:\Users\Ahn SooMin\Desktop\AlarmClock_FE")
+  return String(swhour).padStart(2, '0') + " : " + String(swmin).padStart(2, '0') + " : " + String(swsec).padStart(2, '0');
+}
+
+function init_Alarm() {
+  setInterval(getAlarm, 1000);
+  alarm = setInterval(getAlarm, 1000);
+  // console.log("do init alarm");
+}
+
+function getAlarm() {
+  const setValue = modifyNumber(h_num1) + " : " + modifyNumber(m_num1) + " : " + modifyNumber(s_num1);
+  //console.log(setValue);
+  const date = new Date();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+  let currentTime = modifyNumber(hours) + " : " + modifyNumber(minutes) + " : " + modifyNumber(seconds);
+  //console.log(currentTime);
+
+  if (currentTime == setValue) {
+    window.open('popup.html');
+    clearInterval(alarm);
+  }
+}
+
+
+
+async function readFile() {
+  let text = await file.text();
+  document.getElementById("time").textContent = text;
 }
 
 function writeFile(name, msg) {//name : 파일명, msg : 기록할 내용
@@ -365,3 +410,5 @@ function writeFile(name, msg) {//name : 파일명, msg : 기록할 내용
     fWrite.close();
   }
 }
+
+//숫자가 깜빡이는 함수 (작성 해보기)
