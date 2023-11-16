@@ -371,7 +371,7 @@ function init_Alarm() {
 }
 
 function getAlarm() {
-  const setValue = modifyNumber(h_num1) + " : " + modifyNumber(m_num1) + " : " + modifyNumber(s_num1);
+  let setValue = modifyNumber(h_num1) + " : " + modifyNumber(m_num1) + " : " + modifyNumber(s_num1);
   //console.log(setValue);
   const date = new Date();
   const hours = date.getHours();
