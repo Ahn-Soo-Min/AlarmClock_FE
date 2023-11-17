@@ -33,6 +33,10 @@ let time = 0;
 let stopwatch;
 let swhour, swmin, swsec;
 
+let timer;
+let targetTime;
+let timerState = true;
+
 //페이지가 로드 될 때 실행되는 함수
 window.onload =function(){
   setDate();
@@ -61,10 +65,10 @@ function mode_Button(){
     setTime();
     interval = setInterval(setTime, 10);
 
-    document.getElementById("button_2").setAttribute("value", "MOVE");
-    document.getElementById("button_3").setAttribute("value", "SET");
-    document.getElementById("button_4").setAttribute("value", "UP");
-    document.getElementById("button_5").setAttribute("value", "DOWN");
+    document.getElementById("button_2").setAttribute("value", "    ");
+    document.getElementById("button_3").setAttribute("value", "    ");
+    document.getElementById("button_4").setAttribute("value", "    ");
+    document.getElementById("button_5").setAttribute("value", "    ");
   }
   //Alarm Mode
   else if(mode_num == 1) {
@@ -73,6 +77,11 @@ function mode_Button(){
     clearInterval(interval);
 
     document.getElementById("time").innerHTML = modifyNumber(h_num1) + " : " + modifyNumber(m_num1) + " : " + modifyNumber(s_num1);
+
+    document.getElementById("button_2").setAttribute("value", "MOVE");
+    document.getElementById("button_3").setAttribute("value", "SET");
+    document.getElementById("button_4").setAttribute("value", "UP");
+    document.getElementById("button_5").setAttribute("value", "DOWN");
   }
   //Timer Mode
   else if(mode_num == 2) {
@@ -280,21 +289,25 @@ function down_Button() {
   }
 }
 
+//Set Button을 누르면 실행되는 함수, Clock Mode에서는 실행되지 않음, StopWatch Mode에서는 Reset 버튼임
 function set_Button() {
   //Alarm Mode
   if (mode_num == 1) {
     init_Alarm();
-    // console.log("clicked set in alarmMode");
   }
   //Timer Mode
   if (mode_num == 2) {
-    
+    timerState = true;
+    targetTime = (h_num2 * 3600) + (m_num2 * 60) + s_num2;
+    init_Timer();
   }
   //StopWatch Mode, Reset 버튼으로 취급
   if (mode_num == 3) {
     resetClock();
   }
 }
+
+// <-------Clock Mode 기능------->
 
 //Date() 함수에서 날짜를 가져오는 함수
 function setDate(){
@@ -327,6 +340,8 @@ function modifyNumber(time) {
     return time;
   }
 }
+
+// <-------Timer Mode 기능------->
 
 //StopWatch Mode에서 time 태그에 들어가는 시간을 출력하는 함수
 function printTime() {
@@ -364,10 +379,11 @@ function getTimeFormatString() {
   return String(swhour).padStart(2, '0') + " : " + String(swmin).padStart(2, '0') + " : " + String(swsec).padStart(2, '0');
 }
 
+// <-------Alarm Mode 기능-------->
+
 function init_Alarm() {
   setInterval(getAlarm, 1000);
   alarm = setInterval(getAlarm, 1000);
-  // console.log("do init alarm");
 }
 
 function getAlarm() {
@@ -386,29 +402,43 @@ function getAlarm() {
   }
 }
 
+// <-------Timer Mode 기능------->
 
-
-async function readFile() {
-  let text = await file.text();
-  document.getElementById("time").textContent = text;
-}
-
-function writeFile(name, msg) {//name : 파일명, msg : 기록할 내용
-  if (name == "") return false;
-  var defaultPath = "C:\Users\Ahn SooMin\Desktop\AlarmClock_FE"
-  var fileObject = new ActiveXObject("Scripting.FileSystemObject");
-  var fullpath = defaultPath + "\\" + name;
-
-  if (!fileObject.FileExists(fullpath)) {
-    var fWrite = fileObject.CreateTextFile(fullpath, false);
-    fWrite.write(msg);
-    fWrite.close();
-  }
-  else {
-    var fWrite = fileObject.OpenTextFile(fullpath, 8);
-    fWrite.write(msg);
-    fWrite.close();
+function init_Timer() {
+  getTimer();
+  stopTimer();
+  timer = setTimeout(init_Timer, 1000);
+  if (timerState == false) {
+    clearInterval(timer);
   }
 }
 
-//숫자가 깜빡이는 함수 (작성 해보기)
+function stopTimer() {
+  if (timer != null) {
+    clearTimeout(timer);
+  }
+}
+
+function getTimer() {
+  targetTime--;
+  console.log(targetTime);
+
+  const remainHours = parseInt(String(targetTime / 3600));
+  const remainMinutes = parseInt(String((targetTime - (remainHours * 3600)) / 60));
+  const remainSeconds = parseInt(String(targetTime % 60));
+
+  document.getElementById("time").innerHTML = modifyNumber(remainHours) + " : " + modifyNumber(remainMinutes) + " : " + modifyNumber(remainSeconds);
+
+  if (targetTime == 0) {
+    window.open('popup.html');
+    timerState = false;
+    document.getElementById("time").innerHTML = "00 : 00 : 00";
+    h_num2 = 0;
+    m_num2 = 0;
+    s_num2 = 0;
+  }
+}
+
+//알람 txt 파일에 저장해서 브라우저를 껏다 켜도 알람 작동하게 하는 함수 
+
+//숫자가 깜빡이는 함수 : 불가능

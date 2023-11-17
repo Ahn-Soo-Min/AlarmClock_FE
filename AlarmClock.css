@@ -8,6 +8,15 @@ body {
   background-color: black;
 }
 
+/* @font-face {
+  font-family: 'LAB디지털';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/LAB디지털.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+*{ font-family: 'LAB디지털'; } */
+
+
 .clockAreaStyle {
   width: 80%;
   align-self:center;
@@ -18,17 +27,19 @@ body {
   display: block;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 .clockSourceStyle{
   /* background-color: antiquewhite; */
   padding-bottom: 8%;
   display: block;
+  text-align: center;
 }
 
 .modeTitleStyle {
   position: relative;
-  font-size: 48px;
+  font-size: 60px;
   font: bold;
   display: block;
   color: whitesmoke;
@@ -45,8 +56,13 @@ body {
   position: relative;
   font-size: 90px;
   font-weight: bold;
-  color: darkgray;
+  color: red;
   display: block;
+  text-align: center;
+  width: 90%;
+  margin: 5px auto;
+  border: 2px solid black;
+  border-radius: 10px;
 }
 
 .buttonAreaStyle{
