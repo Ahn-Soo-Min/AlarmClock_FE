@@ -381,11 +381,13 @@ function getTimeFormatString() {
 
 // <-------Alarm Mode 기능-------->
 
+// 재귀 호출로 1초마다 setInterval() 함수를 반복해서 실행
 function init_Alarm() {
   setInterval(getAlarm, 1000);
   alarm = setInterval(getAlarm, 1000);
 }
 
+// 목표로 한 시간의 값을 받아오고 현재 시간과 같다면 popup.html을 새로운 창에서 열리게 함
 function getAlarm() {
   let setValue = modifyNumber(h_num1) + " : " + modifyNumber(m_num1) + " : " + modifyNumber(s_num1);
   //console.log(setValue);
@@ -404,6 +406,7 @@ function getAlarm() {
 
 // <-------Timer Mode 기능------->
 
+// 재귀 호출로 1초마다 init_Timer() 함수를 반복해서 실행하고 타이머가 다 되면 재귀 호출을 종료시킴
 function init_Timer() {
   getTimer();
   stopTimer();
@@ -413,15 +416,16 @@ function init_Timer() {
   }
 }
 
+// 타이머를 종료시키는 함수
 function stopTimer() {
   if (timer != null) {
     clearTimeout(timer);
   }
 }
 
+// 입력 받은 시간이 총 몇 초인지 계산하고 1초씩 줄어들게 함, 0초가 되었을 경우 popup.html이 뜨게 함
 function getTimer() {
   targetTime--;
-  console.log(targetTime);
 
   const remainHours = parseInt(String(targetTime / 3600));
   const remainMinutes = parseInt(String((targetTime - (remainHours * 3600)) / 60));
@@ -437,8 +441,4 @@ function getTimer() {
     m_num2 = 0;
     s_num2 = 0;
   }
-}
-
-//알람 txt 파일에 저장해서 브라우저를 껏다 켜도 알람 작동하게 하는 함수 
-
-//숫자가 깜빡이는 함수 : 불가능
+} 
